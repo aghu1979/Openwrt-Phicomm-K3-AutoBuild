@@ -1,11 +1,37 @@
 # build-lede-for-phicomm-k3
-编译斐讯k3版本的lede，默认极简配置
+编译斐讯k3版本的Openwrt，完全自用，服务列表如下，如有其它需求，请fork后自行修改.config。
 
 # 使用步骤
 如果你只是想下载lede k3的固件包，直接在Actions中选择最新workflow下载Artifacts即可
 
-默认登陆IP 192.168.2.1 密码 password
+默认登陆IP 192.168.11.1 密码 password
 
+# 包含服务列表：
+状态：
+WireGuard状态
+释放内存
+系统：
+Web管理
+TTYD
+文件传输
+定时重启
+服务：
+Passwall
+SSRP
+上网时间控制
+解锁网易云
+OpenClash
+Lucky大吉
+WatchCat
+网络唤醒++
+KMS
+UPnP
+网络存储：
+
+网络：
+TurboACC
+带宽监控：
+nlbw
 
 如果想自己编译最新lede k3固件包，按下面步骤即可：
 
@@ -15,24 +41,8 @@
 - 2. 通过Run workflow按钮运行编译
 - 3. 编译成功以后在Artifacts下载固件包即可
 
-如果上面步骤编译不成功，则需要自己手动生成一下.config
-- 0. fork本仓库
-- 1. 在Actions->All workflows中点击OpenWrt-CI
-- 2. 通过Run workflow按钮运行编译（编译前把SSH connection to Actions改为true）
-- 3. 编译运行到SSH connection to Actions时会出现类似下面信息等待你手动操作
-    ```
-    To connect to this session copy-n-paste the following into a terminal or browser:
-    ssh Y26QeagDtsPXp2mT6me5cnMRd@nyc1.tmate.io
-    https://tmate.io/t/Y26QeagDtsPXp2mT6me5cnMRd
-    ```
-- 4. 复制SSH连接命令粘贴到终端内执行，或者复制链接在浏览器中打开使用网页终端。（网页终端可能会遇到黑屏的情况，按Ctrl+C即可）
-- 5. 执行make menuconfig进入配置界面
-- 6. 参考[手动编译斐讯K3路由器OpenWRT固件，开启SSRP。极简配置，适合初学者](https://www.youtube.com/watch?v=IPk3q5rbtN8)进行配置，其实主要选择三点（当然想为其他品牌编译可以选择对应的Target和Target Profile，其他品牌的Target信息可以参考[这里](https://github.com/MrH723/Actions-OpenWrt/tree/main/config)）：
-    - 1. Target选择带BCM53xx ARM的
-    - 2. Target Profile选择PHCOMM K3
-    - 3. （可选）根据需要在LuCI->Applications中选择额外安装的应用
-- 7. 完成后按Ctrl+D组合键或执行exit命令退出，退出时提示是否保存时选择Yes
-- 8. 按照正常情况的步骤再次编译即可
+如果上面步骤编译不成功，则需要自己手动修改.config
+
 
 # 常用操作
 ## 推荐配置
