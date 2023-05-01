@@ -23,8 +23,8 @@ on:
   #   branches: 
   #     - main
   # 每月20号
-  # schedule:
-  #   - cron: 0 20 * * *
+  schedule:
+  - cron: 0 20 * * *
   # 发布release的时候
   # release:
   #   types: [published]
@@ -73,6 +73,33 @@ jobs:
 
           # 不用这个替换命令来取消#注释了，lede最新仓库已经把"#src-git helloworld"这行给删了
           # sed -i 's/#src-git helloworld/src-git helloworld/g' ./feeds.conf.default
+
+echo '添加Passwall依赖feeds'
+sed -i '$a src-git passwall https://github.com/xiaorouji/openwrt-passwall' feeds.conf.default
+echo '=========Add passwall feeds source OK!========='
+
+echo '添加Passwall软件源'
+rm -rf package/lean/luci-app-passwall 
+git clone -b luci https://github.com/xiaorouji/openwrt-passwall package/lean/luci-app-passwall 
+echo '=========Add passwall source OK!========='
+
+echo '添加helloworld/vssr软件源'
+rm -rf package/lean/helloworld
+rm -rf package/helloworld
+#sed -i "/helloworld/d" "feeds.conf.default"
+echo 'src-git helloworld https://github.com/fw876/helloworld.git' >>feeds.conf.default
+
+echo '添加第三方软件源'
+#添加kenzok8/small-package
+echo 'src-git small8 https://github.com/kenzok8/small-package' >>feeds.conf.default
+#添加liuran001
+#echo 'src-git liuran001 https://github.com/liuran001/openwrt-packages' >>feeds.conf.default
+#添加kiddin9
+#echo 'src-git kiddin9 https://github.com/kiddin9/openwrt-packages' >>feeds.conf.default
+#添加siropboy
+#git clone https://github.com/siropboy/sirpdboy-package package/sirpdboy-package
+#echo 'src-git sirpdboy https://github.com/sirpdboy/sirpdboy-package' >>feeds.conf.default
+echo '=========添加第三方软件源OK!========='
           
           ./scripts/feeds update -a
           ./scripts/feeds install -a
@@ -104,7 +131,7 @@ jobs:
           mv ./myconfig/.config ./
 
           # 更改默认ip地址
-          sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/files/bin/config_generate
+          sed -i 's/192.168.1.1/192.168.11.1/g' package/base-files/files/bin/config_generate
 
           # 更改bcm53xx makefile，只编译k3固件(先注释所有的TARGET_开头的行，再把phicomm_k3这行打开)
           sed -i 's|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += phicomm_k3|TARGET_DEVICES += phicomm_k3|' target/linux/bcm53xx/image/Makefile
