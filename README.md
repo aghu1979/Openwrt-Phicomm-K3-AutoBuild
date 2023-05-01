@@ -1,4 +1,4 @@
-# build-lede-for-phicomm-k3
+# Openwrt-Phicomm-K3-AutoBuild,froked from barry-ran/build-lede-for-phicomm-k3
 编译斐讯k3版本的Openwrt，完全自用，服务列表如下，如有其它需求，请fork后自行修改.config。
 
 # 使用步骤
