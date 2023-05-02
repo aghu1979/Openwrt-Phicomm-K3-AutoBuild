@@ -1,119 +1,97 @@
-# Openwrt-Phicomm-K3-AutoBuild,froked from barry-ran/build-lede-for-phicomm-k3
+Openwrt-Phicomm-K3-AutoBuild,froked from barry-ran/build-lede-for-phicomm-k3
 编译斐讯k3版本的Openwrt，完全自用，服务列表如下，如有其它需求，请fork后自行修改.config。
 
-# 使用步骤
+使用步骤
 如果你只是想下载lede k3的固件包，直接在Actions中选择最新workflow下载Artifacts即可
 
 默认登陆IP 192.168.11.1 密码 password
 
-# 包含服务列表：
-状态：
-WireGuard状态
-释放内存
-系统：
-Web管理
-TTYD
-文件传输
-定时重启
-服务：
-Passwall
-SSRP
-上网时间控制
-解锁网易云
-OpenClash
-Lucky大吉
-WatchCat
-网络唤醒++
-KMS
-UPnP
-网络存储：
+包含服务列表：
+状态： WireGuard状态 系统： Web管理 TTYD 文件传输 定时设置luci-app-autotimeset 服务： Passwall SSRP 上网时间控制 解锁网易云 OpenClash Lucky大吉 WatchCat 网络唤醒++ KMS UPnP 网络存储：
 
-网络：
-TurboACC
-带宽监控：
-netdata
-nlbw
+网络： TurboACC 带宽监控： netdata nlbw
 
 如果想自己编译最新lede k3固件包，按下面步骤即可：
 
 正常情况：
-- 0. fork本仓库
-- 1. 在Actions->All workflows中点击OpenWrt-CI
-- 2. 通过Run workflow按钮运行编译
-- 3. 编译成功以后在Artifacts下载固件包即可
 
+fork本仓库
+在Actions->All workflows中点击OpenWrt-CI
+通过Run workflow按钮运行编译
+编译成功以后在Artifacts下载固件包即可
 如果上面步骤编译不成功，则需要自己手动修改.config
 
-
-# 常用操作
-## 推荐配置
-- [PLUS+]将你的上网姿势设定为使用本机端口为5335的DNS服务，选择绕过某些IP模式
-- [PassW]将你的上网姿势设定为DNS模式-不使用，选择绕过某些IP模式
-
-## Aria2下载配置
-- 1. 编译的时候加上aira2：
-    ```
-    # Aria2 luci配置页面
-    CONFIG_PACKAGE_luci-app-aria2=y
-    # Aria2核心包
-    CONFIG_PACKAGE_aria2=y
-    # Aria2 下载管理页面（可选，luci-app-aria2会自带一个Aria-Ng，可以两个都按上，选自己喜欢的用）
-    CONFIG_PACKAGE_webui-aria2=y
-    ```
-- 2. 路由器管理界面开启aira2
-    1. 路由器接入硬盘/U盘
-    2. 在系统->挂载点找到已经挂载的硬盘，例如`/mnt/sda2`
-    3. 进入`Aria2`的`文件和目录`选项，修改`默认下载目录`为你的磁盘挂载路径：`/mnt/sda2`，保存配置
-    4. 这时候Aria2就启动了，界面上也出现Aria-Ng和webui-aria2了，点击去就能新建下载任务了
-
-# 关键技术
-## .config怎么配置比较合适
+常用操作
+推荐配置
+[PLUS+]将你的上网姿势设定为使用本机端口为5335的DNS服务，选择绕过某些IP模式
+[PassW]将你的上网姿势设定为DNS模式-不使用，选择绕过某些IP模式
+Aria2下载配置
+编译的时候加上aira2：
+# Aria2 luci配置页面
+CONFIG_PACKAGE_luci-app-aria2=y
+# Aria2核心包
+CONFIG_PACKAGE_aria2=y
+# Aria2 下载管理页面（可选，luci-app-aria2会自带一个Aria-Ng，可以两个都按上，选自己喜欢的用）
+CONFIG_PACKAGE_webui-aria2=y
+路由器管理界面开启aira2
+路由器接入硬盘/U盘
+在系统->挂载点找到已经挂载的硬盘，例如/mnt/sda2
+进入Aria2的文件和目录选项，修改默认下载目录为你的磁盘挂载路径：/mnt/sda2，保存配置
+这时候Aria2就启动了，界面上也出现Aria-Ng和webui-aria2了，点击去就能新建下载任务了
+关键技术
+.config怎么配置比较合适
 配置.config有两个方法：
-- make menuconfig:弹出用户交互界面，由根据用户选择产生新的.config
-- make defconfig:在已有.config的基础上，补充一些默认值生成.config(可能是这样吧)
 
-一般搜索编译k3的教程，都提供了参考的.config(例如[关于Github Action自动编译Lean_Openwrt的配置修改问题](https://zhuanlan.zhihu.com/p/94527343)里就有提供.config配置方法)，但问题是lede的config经常变化，网上的.config一开始可能可以用，过一段时间就不能用了，兼容性不好。
+make menuconfig:弹出用户交互界面，由根据用户选择产生新的.config
+make defconfig:在已有.config的基础上，补充一些默认值生成.config(可能是这样吧)
+一般搜索编译k3的教程，都提供了参考的.config(例如关于Github Action自动编译Lean_Openwrt的配置修改问题里就有提供.config配置方法)，但问题是lede的config经常变化，网上的.config一开始可能可以用，过一段时间就不能用了，兼容性不好。
 
 如果需要使用make menuconfig的话就需要用户交互，在技术上可以通过ssh连接到Github Actions来实现，但是每次ssh连接手动选择再编译比较麻烦，对新手也不友好。
 
-最终采用的方案是做成可配置的方式，使用make menuconfig还是make defconfig由用户自己选择，并且使用make menuconfig生成的.config都提交到当前仓库中，
-下次使用make defconfig的时候自动使用当前仓库的.config
+最终采用的方案是做成可配置的方式，使用make menuconfig还是make defconfig由用户自己选择，并且使用make menuconfig生成的.config都提交到当前仓库中， 下次使用make defconfig的时候自动使用当前仓库的.config
 
-所以最终效果是用户可以直接使用make defconfig结合本仓库自带的.config编译，如果失败了，再采用make menuconfig方式编译，同时自动更新.config文件，
-下次又可以使用make defconfig方式了，只有在必须的时候才使用make menuconfig，简化编译操作。
+所以最终效果是用户可以直接使用make defconfig结合本仓库自带的.config编译，如果失败了，再采用make menuconfig方式编译，同时自动更新.config文件， 下次又可以使用make defconfig方式了，只有在必须的时候才使用make menuconfig，简化编译操作。
 
-## k3screenctrl发展史
-[updateing/k3screenctrl](https://github.com/updateing/k3screenctrl)(逆向做出第一版k3screenctrl) -> [RightFS/k3screenctrl](https://github.com/RightFS/k3screenctrl)(提供了屏幕固件的文件) -> [Hill-98/luci-app-k3screenctrl](https://github.com/Hill-98/luci-app-k3screenctrl)(添加了网页设置的支持) -> [zxlhhyccc/Hill-98-k3screenctrl](https://github.com/zxlhhyccc/Hill-98-k3screenctrl)(支持了天气) -> [lwz322/k3screenctrl](https://github.com/lwz322/k3screenctrl)(修复了天气导致屏幕卡死问题)
+k3screenctrl发展史
+updateing/k3screenctrl(逆向做出第一版k3screenctrl) -> RightFS/k3screenctrl(提供了屏幕固件的文件) -> Hill-98/luci-app-k3screenctrl(添加了网页设置的支持) -> zxlhhyccc/Hill-98-k3screenctrl(支持了天气) -> lwz322/k3screenctrl(修复了天气导致屏幕卡死问题)
 
-- [k3screenctrl发展史](https://github.com/lwz322/k3screenctrl#%E5%8F%AF%E4%BB%A5%E5%85%AC%E5%BC%80%E7%9A%84%E6%83%85%E6%8A%A5)
-- [替换lede中k3screenctrl的方法](https://github.com/yangxu52/Phicomm-K2P-K3-OpenWrt-Firmware/blob/2efaffe30b1da709ae9c6c881f8462873ac06af5/PhicommK3/lede/part1.sh#L33)
+k3screenctrl发展史
+替换lede中k3screenctrl的方法
+参考链接
+手动编译斐讯K3路由器OpenWRT固件，开启SSRP。极简配置，适合初学者
 
-# 参考链接
-- [手动编译斐讯K3路由器OpenWRT固件，开启SSRP。极简配置，适合初学者](https://www.youtube.com/watch?v=IPk3q5rbtN8)
-- [使用 GitHub Actions 云编译 OpenWrt源码(主要参考，有.config完美生成流程)](https://github.com/P3TERX/Actions-OpenWrt)
-- [使用 GitHub Actions 云编译 OpenWrt教程](https://p3terx.com/archives/build-openwrt-with-github-actions.html)
-- [OpenWrt CI在线集成自动编译环境(次要参考)](https://github.com/KFERMercer/OpenWrt-CI)
-- [OpenWrt-Autobuild](https://github.com/vgist/OpenWrt-Autobuild)
-- [Phicomm-K2P-K3-OpenWrt-Firmware](https://github.com/yangxu52/Phicomm-K2P-K3-OpenWrt-Firmware)
+使用 GitHub Actions 云编译 OpenWrt源码(主要参考，有.config完美生成流程)
 
-- [面向小白的Github_Action使用workflow自动编译lean_openwrt教程](https://zhuanlan.zhihu.com/p/94402324)
-- [关于Github Action自动编译Lean_Openwrt的配置修改问题](https://zhuanlan.zhihu.com/p/94527343)
+使用 GitHub Actions 云编译 OpenWrt教程
 
-- [OpenWrt官方原版+lede包编译斐讯k3教程](https://gist.github.com/luoqeng/ad535fca4a87a1cfb9a9c1def151b837)
+OpenWrt CI在线集成自动编译环境(次要参考)
 
-- [其他路由器的config参考，主要知道Target和Target Profile选什么](https://github.com/MrH723/Actions-OpenWrt/tree/main/config)
-- [OpenWrt全网插件汇总-多种设备云编译](https://github.com/MrH723/Actions-OpenWrt)
-- [helloworld](https://github.com/fw876/helloworld)
-- [lede](https://github.com/coolsnowwolf/lede)
+OpenWrt-Autobuild
 
-# luci-app软件包
+Phicomm-K2P-K3-OpenWrt-Firmware
+
+面向小白的Github_Action使用workflow自动编译lean_openwrt教程
+
+关于Github Action自动编译Lean_Openwrt的配置修改问题
+
+OpenWrt官方原版+lede包编译斐讯k3教程
+
+其他路由器的config参考，主要知道Target和Target Profile选什么
+
+OpenWrt全网插件汇总-多种设备云编译
+
+helloworld
+
+lede
+
+luci-app软件包
 luci-app软件包安装方式多种：
-- 在make menuconfig的时候选择
-- 直接修改本仓库.config文件（想安装哪个就解除哪个注释，不用管它的依赖包，会自动安装的）
-- 在路由器管理后台的系统->安装包里安装/卸载
 
-以下是常见luci-app包介绍([出处](https://www.right.com.cn/forum/thread-3682029-1-1.html))
-```
+在make menuconfig的时候选择
+直接修改本仓库.config文件（想安装哪个就解除哪个注释，不用管它的依赖包，会自动安装的）
+在路由器管理后台的系统->安装包里安装/卸载
+以下是常见luci-app包介绍(出处)
+
  -----------------------------------------------------------------------------------------
 LuCI ---> Applications ---> luci-app-accesscontrol  #访问时间控制
 LuCI ---> Applications ---> luci-app-adbyby-plus   #广告屏蔽大师Plus +
@@ -396,4 +374,3 @@ LuCI ---> Applications ---> luci-app-wrtbwmon  #实时流量监测
 LuCI ---> Applications ---> luci-app-xlnetacc  #迅雷快鸟
 LuCI ---> Applications ---> luci-app-zerotier  #ZeroTier内网穿透
 ----------------------------------------------------------------------------------------
-```
