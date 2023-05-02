@@ -7,7 +7,7 @@
 # <https://github.com/KFERMercer/OpenWrt-CI>
 #
 
-name: OpenWrt-CI-Kucat主题-更换69027无线驱动
+name: OpenWrt-CI-Argonne主题-更换69027无线驱动
 
 # 脚本执行时机
 on:
@@ -135,8 +135,8 @@ jobs:
 
           # 取消bootstrap为默认主题：
           sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
-          # 修改bootstrap主题为kucat主题：
-          sed -i 's/luci-theme-bootstrap/luci-theme-kucat/g' ./feeds/luci/collections/luci/Makefile
+          # 修改bootstrap主题为argonne主题：
+          sed -i 's/luci-theme-bootstrap/luci-theme-argonne/g' ./feeds/luci/collections/luci/Makefile
 
           # 1.'asus_dhd24' 2.'ac88u_20' 3.'69027'
           firmware='69027'
