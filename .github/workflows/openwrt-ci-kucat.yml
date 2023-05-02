@@ -7,7 +7,7 @@
 # <https://github.com/KFERMercer/OpenWrt-CI>
 #
 
-name: OpenWrt-CI-kucat
+name: OpenWrt-CI-Kucat主题
 
 # 脚本执行时机
 on:
@@ -90,6 +90,7 @@ jobs:
           # echo 'src-git small8 https://github.com/kenzok8/small-package' >>feeds.conf.default
           echo 'src-git sirpdboy https://github.com/sirpdboy/sirpdboy-package' >>feeds.conf.default
           echo 'src-git kucat https://github.com/sirpdboy/luci-theme-kucat' >>feeds.conf.default
+          git clone -b 21.02 https://github.com/kenzok78/luci-theme-argonne package/lean/luci-theme-argonne
 
           ./scripts/feeds update -a
           ./scripts/feeds install -a
@@ -132,7 +133,7 @@ jobs:
 
           # 取消bootstrap为默认主题：
           sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
-          # 修改bootstrap主题为argonne主题：
+          # 修改bootstrap主题为kucat主题：
           sed -i 's/luci-theme-bootstrap/luci-theme-kucat/g' ./feeds/luci/collections/luci/Makefile
 
           make defconfig
