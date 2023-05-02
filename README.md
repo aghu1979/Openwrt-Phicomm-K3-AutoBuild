@@ -31,6 +31,7 @@ UPnP
 网络：
 TurboACC
 带宽监控：
+netdata
 nlbw
 
 如果想自己编译最新lede k3固件包，按下面步骤即可：
