@@ -7,7 +7,7 @@
 # <https://github.com/KFERMercer/OpenWrt-CI>
 #
 
-name: OpenWrt-CI-源无线
+name: OpenWrt-K3-添加源/修改无线功率23/更换无线驱动69027
 
 # 脚本执行时机
 on:
