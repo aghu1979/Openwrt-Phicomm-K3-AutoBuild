@@ -22,12 +22,13 @@ on:
   push:
     branches: 
       - main
-  # 每月1号
+  # 每周日0点
   schedule:
-    - cron: 0 1 * * *
+    - cron: 0 0 * * 0
   # 发布release的时候
-  release:
-    types: [published]
+  # release:
+  #   types: [published]
+
 
 jobs:
 
