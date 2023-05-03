@@ -21,7 +21,7 @@ on:
   # main分支有提交的时候
   # push:
   #   branches: 
-      - main
+  #     - main
   # 每周日0点
   schedule:
     - cron: 0 0 * * 0
