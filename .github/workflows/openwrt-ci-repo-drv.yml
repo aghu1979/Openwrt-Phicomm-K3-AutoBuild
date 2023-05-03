@@ -7,7 +7,7 @@
 # <https://github.com/KFERMercer/OpenWrt-CI>
 #
 
-name: OpenWrt-CI-添加源-无线驱动69027/功率调整
+name: OpenWrt-CI-源无线
 
 # 脚本执行时机
 on:
@@ -19,12 +19,12 @@ on:
         required: false
         default: 'false'
   # main分支有提交的时候
-  # push:
-  #   branches: 
-  #     - main
-  # 每月20号
+  push:
+    branches: 
+      - main
+  # 每月1号
   schedule:
-    - cron: 0 20 * * *
+    - cron: 0 1 * * *
   # 发布release的时候
   release:
     types: [published]

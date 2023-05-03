@@ -19,12 +19,12 @@ on:
         required: false
         default: 'false'
   # main分支有提交的时候
-  # push:
-  #   branches: 
-  #     - main
-  # 每月20号
+  push:
+    branches: 
+      - main
+  # 每月1号
   schedule:
-    - cron: 0 20 * * *
+    - cron: 0 1 * * *
   # 发布release的时候
   release:
     types: [published]
