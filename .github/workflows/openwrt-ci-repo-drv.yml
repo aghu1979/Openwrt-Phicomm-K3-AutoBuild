@@ -19,15 +19,15 @@ on:
         required: false
         default: 'false'
   # main分支有提交的时候
-  push:
-    branches: 
+  # push:
+  #   branches: 
       - main
   # 每周日0点
   schedule:
     - cron: 0 0 * * 0
   # 发布release的时候
-  # release:
-  #   types: [published]
+  release:
+    types: [published]
 
 
 jobs:
